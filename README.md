@@ -6,11 +6,6 @@ In this API I have used Codeigniter standalone [Active Records](https://codeigni
 You have set place API into your server root directory and configure the database in ```./includes/config.php```
 
 
-
-```bash
-pip install foobar
-```
-
 ## Usage
 ```HTTP
 GET: http://YOUR_WEBSITE_URL/api/index
