@@ -121,7 +121,11 @@ function &DB($params = '', $query_builder_override = NULL)
 			$DB = new $driver($params);
 		}
 	}
+	try {
+		$DB->initialize();
+	}catch ( \Exception $exception){
+		throw  new \Exception('Unable to connect database');
+	}
 
-	$DB->initialize();
 	return $DB;
 }

@@ -34,17 +34,33 @@ class REST {
 
 
 	public function __construct(){
-		$this->inputs();
-
 		// Configurations
 		global  $config;
 		$this->config = $config;
+		// Debug mood
+		$this->debug();
+
+		$this->inputs();
+
 		// Initialize form validation
 		$this->form_validation = new GUMP;
 
 		// Create DB connection
 		$this->db_connection();
 
+	}
+
+	/*
+	 * @desc This function will check and set debug of API
+	 * @param
+	 * @return void
+	 * */
+	private function debug(){
+		if($this->config['api_mood'] == 'Development'){
+			ini_set('display_errors', 1);
+			ini_set('display_startup_errors', 1);
+			error_reporting(E_ALL);
+		}
 
 	}
 
@@ -65,7 +81,17 @@ class REST {
 	 * @return PDO MySql driver base connection
 	 * */
 	protected function db_connection(){
-		$this->db =& CI\DB($this->config['DB']);
+		try{
+
+			$this->db =& CI\DB($this->config['DB']);
+		} catch (Exception $exception){
+			$response = [
+				'message' => $exception->getMessage(),
+				'error' => true,
+				'data'=>[]
+			];
+			$this->response($response, 500);
+		}
 	}
 
 	/*

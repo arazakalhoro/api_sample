@@ -1,5 +1,7 @@
 <?php
 	$config = [
+		//Production|Development
+		'api_mood'=> 'Development',
 		'DB' =>[
 			'hostname' => 'localhost',
 			'username' => 'root',

@@ -394,11 +394,15 @@ abstract class CI_DB_driver {
 		{
 			return TRUE;
 		}
-
+		error_reporting(~E_WARNING & ~E_NOTICE);
 		// ----------------------------------------------------------------
+		try {
+			// Connect to the database and set the connection ID
+			$this->conn_id = $this->db_connect($this->pconnect);
+		}catch ( \Exception $exception){
+			throw  new \Exception('Unable to connect database');
+		}
 
-		// Connect to the database and set the connection ID
-		$this->conn_id = $this->db_connect($this->pconnect);
 
 		// No connection resource? Check if there is a failover else throw an error
 		if ( ! $this->conn_id)
@@ -429,11 +433,7 @@ abstract class CI_DB_driver {
 			// We still don't have a connection?
 			if ( ! $this->conn_id)
 			{
-
-				if ($this->db_debug)
-				{
-					$this->display_error('db_unable_to_connect');
-				}
+				throw  new \Exception('Unable to connect database');
 
 				return FALSE;
 			}
